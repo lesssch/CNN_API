@@ -16,9 +16,10 @@ app = FastAPI()
 @app.post("/predict_item")
 def predict_item(file: UploadFile = File(...)) -> str:
     content = file.file.read()
-    image = np.asarray(Image.open(BytesIO(content)))
+    image = Image.open(BytesIO(content))
+    gray_image = np.asarray(image.convert("L"))
 
-    image = rescale(image, 1/3, mode='reflect')
+    image = rescale(gray_image, 1/3, mode='reflect')
     img_hog, hog_img = hog(
         image, pixels_per_cell=(14, 14),
         cells_per_block=(2, 2),
