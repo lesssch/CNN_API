@@ -7,7 +7,7 @@ import numpy as np
 import joblib
 
 model = joblib.load("sgd_model.pkl")
-pca = joblib.load("pca_model.pkl")
+pca = joblib.load("pca.pkl")
 
 class_dict = {"MEL": 1, "NV": 2, "BCC": 3, "AKIEC": 4, "BKL":5, "DF": 6, "VASC": 7}
 
