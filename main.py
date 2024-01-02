@@ -5,13 +5,16 @@ import numpy as np
 import joblib
 from PIL import Image
 from io import BytesIO
+import pandas as pd
 
 model = joblib.load("sgd_model.pkl")
 pca = joblib.load("pca.pkl")
+scaler = joblib.load("sc.pkl")
 
 class_dict = {"MEL": 1, "NV": 2, "BCC": 3, "AKIEC": 4, "BKL":5, "DF": 6, "VASC": 7}
 
 app = FastAPI()
+image_vectors = []
 
 @app.post("/predict_item")
 def predict_item(file: UploadFile = File(...)) -> str:
@@ -27,8 +30,13 @@ def predict_item(file: UploadFile = File(...)) -> str:
         visualize=True,
         block_norm='L2-Hys')
     flat_vector = np.array(hog_img).flatten()
-    flat_vector = pca.transform(flat_vector)
-    prediction = model.predict(flat_vector)
+    image_vectors.append(flat_vector)
+    image_vectors_array = np.array(image_vectors)
+    image_vectors_array = pca.transform(image_vectors_array)
+    df = pd.DataFrame(data=image_vectors_array)
+    df = scaler.transform(df)
+
+    prediction = model.predict(df)
     result = None
     for key, value in class_dict.items():
         if value == prediction:
