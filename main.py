@@ -14,10 +14,11 @@ scaler = joblib.load("sc.pkl")
 class_dict = {"MEL": 1, "NV": 2, "BCC": 3, "AKIEC": 4, "BKL":5, "DF": 6, "VASC": 7}
 
 app = FastAPI()
-image_vectors = []
+
 
 @app.post("/predict_item")
 def predict_item(file: UploadFile = File(...)) -> str:
+    image_vectors = []
     content = file.file.read()
     image = Image.open(BytesIO(content))
     gray_image = np.asarray(image.convert("L"))
