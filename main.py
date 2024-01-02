@@ -1,10 +1,10 @@
-import pickle
 from fastapi import FastAPI, File, UploadFile
 from skimage.feature import hog
-from skimage.io import imread
 from skimage.transform import rescale
 import numpy as np
 import joblib
+from PIL import Image
+from io import BytesIO
 
 model = joblib.load("sgd_model.pkl")
 pca = joblib.load("pca.pkl")
@@ -16,7 +16,7 @@ app = FastAPI()
 @app.post("/predict_item")
 def predict_item(file: UploadFile = File(...)) -> str:
     content = file.file.read()
-    image = imread(content, as_gray=True)
+    image = Image.open(BytesIO(content))
 
     image = rescale(image, 1/3, mode='reflect')
     img_hog, hog_img = hog(
