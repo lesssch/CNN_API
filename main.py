@@ -5,7 +5,7 @@ from skimage.io import imread
 from skimage.transform import rescale
 import numpy as np
 
-pkl_filename = "sgd_model.pkl"
+pkl_filename = "./sgd_model.pkl"
 with open(pkl_filename, 'rb') as file:
     pickle_model = pickle.load(file)
 
