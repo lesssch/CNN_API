@@ -4,10 +4,10 @@ from skimage.feature import hog
 from skimage.io import imread
 from skimage.transform import rescale
 import numpy as np
+import joblib
 
-pkl_filename = "./sgd_model.pkl"
-with open(pkl_filename, 'rb') as file:
-    pickle_model = pickle.load(file)
+model = joblib.load("sgd_model.pkl")
+pca = joblib.load("pca_model.pkl")
 
 class_dict = {"MEL": 1, "NV": 2, "BCC": 3, "AKIEC": 4, "BKL":5, "DF": 6, "VASC": 7}
 
@@ -26,7 +26,8 @@ def predict_item(file: UploadFile = File(...)) -> str:
         visualize=True,
         block_norm='L2-Hys')
     flat_vector = np.array(hog_img).flatten()
-    prediction = pickle_model.predict(flat_vector)
+    flat_vector = pca.transform(flat_vector)
+    prediction = model.predict(flat_vector)
     result = None
     for key, value in class_dict.items():
         if value == prediction:
