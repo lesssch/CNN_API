@@ -1,47 +1,37 @@
 from fastapi import FastAPI, File, UploadFile
-from skimage.feature import hog
-from skimage.transform import rescale
+# from skimage.feature import hog
+# from skimage.transform import rescale
 import numpy as np
 import joblib
-from PIL import Image
-from io import BytesIO
-import pandas as pd
+# from PIL import Image
+# from io import BytesIO
+# import pandas as pd
+import cv2
 
-model = joblib.load("sgd_model.pkl")
-pca = joblib.load("pca.pkl")
-scaler = joblib.load("sc.pkl")
+model = joblib.load("cnn_model.pkl")
+# pca = joblib.load("pca.pkl")
+# scaler = joblib.load("sc.pkl")
 
-class_dict = {"MEL": 1, "NV": 2, "BCC": 3, "AKIEC": 4, "BKL":5, "DF": 6, "VASC": 7}
+class_dict = {"MEL": 0., "NV": 0., "BCC": 0., "AKIEC": 0., "BKL": 0., "DF": 0., "VASC": 0.}
 
 app = FastAPI()
 
 
 @app.post("/predict_item")
-def predict_item(file: UploadFile = File(...)) -> str:
+async def predict_item(file: UploadFile = File(...)) -> dict:
     image_vectors = []
-    content = file.file.read()
-    image = Image.open(BytesIO(content))
-    gray_image = np.asarray(image.convert("L"))
+    content = await file.read()
+    nparr = np.frombuffer(content, np.uint8)
+    image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    image = cv2.resize(image, None, fx=0.3, fy=0.3)
+    image_vectors.append(image)
 
-    image = rescale(gray_image, 1/3, mode='reflect')
-    img_hog, hog_img = hog(
-        image, pixels_per_cell=(14, 14),
-        cells_per_block=(2, 2),
-        orientations=9,
-        visualize=True,
-        block_norm='L2-Hys')
-    flat_vector = np.array(hog_img).flatten()
-    image_vectors.append(flat_vector)
     image_vectors_array = np.array(image_vectors)
-    image_vectors_array = pca.transform(image_vectors_array)
-    df = pd.DataFrame(data=image_vectors_array)
-    df = scaler.transform(df)
 
-    prediction = model.predict(df)
-    result = None
+    prediction = model.predict(image_vectors_array)
+    c = 0
     for key, value in class_dict.items():
-        if value == prediction:
-            result = key
-            break
+        class_dict[key] = prediction[0][c]
+        c += 1
 
-    return result
+    return class_dict
