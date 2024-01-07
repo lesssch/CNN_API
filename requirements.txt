@@ -8,3 +8,4 @@ python-multipart
 numpy
 scikit-image
 opencv-python
+tensorflow
