@@ -7,7 +7,6 @@ scikit-learn
 python-multipart
 numpy
 scikit-image
-opencv-python
 tensorflow
-opencv-contrib-python
 gunicorn
+opencv-python-headless
