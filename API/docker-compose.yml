@@ -26,3 +26,4 @@ services:
           - redis
 networks:
   fastapi-network:
+    driver: bridge
