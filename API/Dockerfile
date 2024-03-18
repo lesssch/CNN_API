@@ -2,7 +2,7 @@ FROM python:3.10
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-RUN sudo apt-get install redis
+RUN apt-get install redis
 
 COPY . /FastAPI
 WORKDIR /FastAPI
