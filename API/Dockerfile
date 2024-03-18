@@ -2,13 +2,10 @@ FROM python:3.10
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-RUN apt-get update
-RUN apt-get -y install redis-server
 
 COPY . /FastAPI
 WORKDIR /FastAPI
 
 EXPOSE 8000
 
-RUN redis-server
 CMD ["python", "app.py"]
