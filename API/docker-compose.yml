@@ -7,6 +7,8 @@ services:
       - "6379:6379"
     expose:
       - "6379"
+    networks:
+      - redis_network
 
   fastapi:
     build:
@@ -16,3 +18,11 @@ services:
       - "8000:8000"
     depends_on:
       - redis
+    networks:
+      - fastapi_network
+      - redis_network
+
+networks:
+  fastapi_network:
+  redis_network:
+    driver: bridge
