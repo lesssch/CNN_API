@@ -77,7 +77,7 @@ def root():
 
 @app.on_event("startup")
 async def startup_event():
-    redis = aioredis.from_url(f"redis://{REDIS_HOST}:{REDIS_PORT})", encoding="utf8", decode_responses=True)
+    redis = aioredis.from_url("redis://localhost:6379", decode_responses=True, encoding="utf-8")
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
 
 if __name__ == "__main__":
