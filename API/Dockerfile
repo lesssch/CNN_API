@@ -11,5 +11,4 @@ WORKDIR /FastAPI
 EXPOSE 8000
 
 RUN redis-server
-RUN redis-cli
 CMD ["python", "app.py"]
