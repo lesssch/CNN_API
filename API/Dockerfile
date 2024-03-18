@@ -2,8 +2,7 @@ FROM python:3.10
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-RUN apt-get install lsb-release curl gpg
-RUN apt-get install redis
+RUN apt install redis-tools
 
 COPY . /FastAPI
 WORKDIR /FastAPI
