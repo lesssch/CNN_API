@@ -1,4 +1,5 @@
 fastapi
+h5py
 pydantic
 uvicorn
 pandas
@@ -7,6 +8,6 @@ scikit-learn
 python-multipart
 numpy
 scikit-image
-tensorflow
+tensorflow==2.15.0
 gunicorn
 opencv-python-headless
