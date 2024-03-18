@@ -15,7 +15,7 @@ from aioredis.exceptions import ResponseError
 import uvicorn
 
 app = FastAPI(title = "MediScan app")
-redis = aioredis.from_url(f"redis://127.0.0.1:6380", decode_responses=True, encoding="utf-8")
+redis = aioredis.from_url("redis://localhost")
 
 modelMEL = joblib.load("LogRegForMEL.pkl")
 
@@ -77,7 +77,7 @@ def root():
 
 @app.on_event("startup")
 async def startup_event():
-    redis = aioredis.from_url(f"redis://127.0.0.1:6380", decode_responses=True, encoding="utf-8")
+    #redis = aioredis.from_url(f"redis://{REDIS_HOST}:{REDIS_PORT}", encoding="utf8", decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
 
 if __name__ == "__main__":
