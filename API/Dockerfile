@@ -10,5 +10,6 @@ COPY . /FastAPI
 WORKDIR /FastAPI
 
 EXPOSE 8000
+EXPOSE 6379
 
 CMD ["python", "app.py"]
