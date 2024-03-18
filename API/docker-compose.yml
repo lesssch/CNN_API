@@ -8,7 +8,9 @@ services:
     expose:
       - "6379"
     networks:
-      - my_network
+      fastapi-network:
+        aliases:
+          - redis
 
   fastapi:
     build:
@@ -19,6 +21,6 @@ services:
     depends_on:
       - redis
     networks:
-      - my_network
-networks:
-  my_network:
+      fastapi-network:
+        aliases:
+          - redis
