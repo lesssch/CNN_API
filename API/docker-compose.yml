@@ -12,7 +12,7 @@ services:
     build:
       context: .
     container_name: fastapi_app
-    command: ["./app.sh"]
+    command: ["app.sh"]
     ports:
       - 9999:8000
     depends_on:
