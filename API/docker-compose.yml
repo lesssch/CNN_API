@@ -24,3 +24,5 @@ services:
       fastapi-network:
         aliases:
           - redis
+networks:
+  fastapi-network:
