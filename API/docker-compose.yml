@@ -1,28 +1,19 @@
-version: '3.8'
-
+version: "3.7"
 services:
-  redis:
-    image: redis
-    ports:
-      - "6379:6379"
-    expose:
-      - "6379"
-    networks:
-      - redis_network
 
-  fastapi:
+  redis:
+    image: redis:7
+    container_name: redis_app
+    command: --port 5370
+    expose:
+      - 5370
+
+  app:
     build:
       context: .
-      dockerfile: Dockerfile
+    container_name: fastapi_app
+    command: ["./app.sh"]
     ports:
-      - "8000:8000"
+      - 9999:8000
     depends_on:
       - redis
-    networks:
-      - fastapi_network
-      - redis_network
-
-networks:
-  fastapi_network:
-  redis_network:
-    driver: bridge
