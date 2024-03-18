@@ -13,6 +13,11 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from aioredis.exceptions import ResponseError
 import uvicorn
+import logging
+
+logger = logging.getLogger(__name__)
+
+logger.info(f"Loading model from {REDIS_HOST}:{REDIS_PORT}")
 
 app = FastAPI(title = "MediScan app")
 redis = aioredis.from_url("redis://localhost")
@@ -77,6 +82,7 @@ def root():
 
 @app.on_event("startup")
 async def startup_event():
+
     redis = aioredis.from_url(f"redis://{REDIS_HOST}:{REDIS_PORT}", encoding="utf8", decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
 
