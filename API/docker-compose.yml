@@ -24,3 +24,6 @@ services:
       fastapi-network:
         aliases:
           - api
+networks:
+  fastapi-network:
+    driver: bridge
