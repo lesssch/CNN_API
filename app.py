@@ -11,14 +11,6 @@ import pandas as pd
 import cv2
 import uvicorn
 
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-REDIS_HOST = os.environ.get("REDIS_HOST")
-REDIS_PORT = os.environ.get("REDIS_PORT")
-
 model = joblib.load("cnn_model.pkl")
 # pca = joblib.load("pca.pkl")
 # scaler = joblib.load("sc.pkl")

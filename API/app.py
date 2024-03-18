@@ -14,6 +14,14 @@ from fastapi_cache.backends.redis import RedisBackend
 from aioredis.exceptions import ResponseError
 import uvicorn
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+REDIS_HOST = os.environ.get("REDIS_HOST")
+REDIS_PORT = os.environ.get("REDIS_PORT")
+
 app = FastAPI(title = "MediScan app")
 redis = aioredis.from_url(f"redis://{REDIS_HOST}:{REDIS_PORT}")
 
