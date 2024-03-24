@@ -70,7 +70,12 @@ def image_to_features(img):
 
 @app.get("/ping")
 async def ping() -> str:
-    return f"Service is working"
+    try:
+        pong = redis.ping()
+        if pong:
+            return "Service is working"
+    except redis.ConnectionError:
+        return "Service is working, but failed to connect to Redis"
 
 
 @app.post("/predict")
