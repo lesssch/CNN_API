@@ -8,6 +8,7 @@ from PIL import Image
 import numpy as np
 from io import BytesIO
 from redis import asyncio as aioredis
+from redis.exceptions import ConnectionError as RedisConnectionError
 from config import REDIS_HOST, REDIS_PORT
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
@@ -71,10 +72,10 @@ def image_to_features(img):
 @app.get("/ping")
 async def ping() -> str:
     try:
-        pong = redis.ping()
+        pong = await redis.ping()
         if pong:
             return "Service is working"
-    except redis.ConnectionError:
+    except RedisConnectionError:
         return "Service is working, but failed to connect to Redis"
 
 
